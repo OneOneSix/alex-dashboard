@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Alex's School Dashboard</title>
+<meta name="theme-color" content="#F6F5F1">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Alex">
+<meta name="format-detection" content="telephone=no">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700&family=Lexend:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --page:#F6F5F1;
+  --card:#FFFFFF;
+  --ink:#2E2D2A;
+  --ink-soft:#6E6C66;
+  --hair:#E9E6DE;
+
+  --teal-50:#E1F5EE;  --teal-200:#5DCAA5; --teal-700:#0F6E56; --teal-900:#04342C;
+  --blue-50:#E6F1FB;  --blue-600:#185FA5; --blue-800:#0C447C;
+  --pink-50:#FBEAF0;  --pink-600:#993556; --pink-800:#72243E;
+  --amber-50:#FAEEDA; --amber-600:#854F0B;--amber-800:#633806;
+  --purple-50:#EEEDFE;--purple-600:#534AB7;--purple-800:#3C3489;
+  --coral-50:#FAECE7; --coral-600:#993C1D;--coral-900:#4A1B0C;
+  --red-50:#FCEBEB;   --red-800:#791F1F;
+  --green-50:#EAF3DE; --green-800:#27500A;
+  --sand:#F1EFE8;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  font-family:'Lexend',system-ui,sans-serif;
+  background:var(--page);color:var(--ink);line-height:1.5;
+  -webkit-text-size-adjust:100%;
+}
+.wrap{
+  max-width:1100px;margin:0 auto;
+  padding:calc(22px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right))
+          calc(56px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left));
+}
+html{background:var(--page)}
+body{-webkit-tap-highlight-color:rgba(93,202,165,.3)}
+.tile,.hello-card,.verse,.card,.cell,.row{-webkit-touch-callout:none}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--teal-200);outline-offset:3px;border-radius:8px}
+
+/* ---------- greeting ---------- */
+
+.hello-card{
+  display:flex;align-items:center;gap:16px;flex-wrap:nowrap;
+  background:var(--teal-50);border-radius:20px;padding:18px 22px;margin-bottom:16px;
+}
+.avatar{
+  width:64px;height:64px;border-radius:50%;background:var(--teal-200);
+  display:flex;align-items:center;justify-content:center;flex:none;
+}
+.avatar svg{width:44px;height:44px;fill:var(--teal-900);color:var(--teal-900)}
+.who{flex:1 1 auto;min-width:0}
+.hello{
+  font-family:'Baloo 2',cursive;font-weight:700;line-height:1.15;
+  font-size:clamp(24px,4.4vw,34px);color:var(--teal-900);
+}
+.today-line{font-size:clamp(14px,2vw,17px);color:var(--teal-700);margin-top:2px}
+
+.weather{
+  margin-left:auto;display:none;align-items:center;gap:11px;flex:0 0 auto;
+  color:var(--teal-900);padding-left:10px;
+}
+.w-word{white-space:nowrap}
+.weather.on{display:flex}
+.weather svg{width:38px;height:38px;stroke:var(--teal-700);fill:none;
+  stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.w-temp{font-family:'Baloo 2',cursive;font-size:30px;font-weight:600;line-height:1}
+.w-word{font-size:13px;color:var(--teal-700);margin-top:1px}
+
+/* ---------- link tiles ---------- */
+
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}
+.tile{
+  border-radius:20px;padding:22px 14px;text-decoration:none;text-align:center;
+  display:flex;flex-direction:column;align-items:center;gap:9px;
+  transition:transform .12s ease;
+}
+.tile:hover,.tile:focus-visible{transform:translateY(-3px)}
+.tile svg{width:42px;height:42px}
+.tile b{font-family:'Baloo 2',cursive;font-size:23px;font-weight:600;line-height:1.1}
+.tile span{font-size:13px}
+
+.t-school{background:var(--blue-50)}   .t-school b{color:var(--blue-800)}   .t-school span{color:var(--blue-600)}
+.t-read{background:var(--pink-50)}     .t-read b{color:var(--pink-800)}     .t-read span{color:var(--pink-600)}
+.t-math{background:var(--amber-50)}    .t-math b{color:var(--amber-800)}    .t-math span{color:var(--amber-600)}
+.t-cal{background:var(--purple-50)}    .t-cal b{color:var(--purple-800)}    .t-cal span{color:var(--purple-600)}
+.t-green{background:var(--green-50)}   .t-green b{color:var(--green-800)}   .t-green span{color:#3B6D11}
+.t-teal{background:var(--teal-50)}     .t-teal b{color:var(--teal-900)}     .t-teal span{color:var(--teal-700)}
+.t-coral{background:var(--coral-50)}   .t-coral b{color:var(--coral-900)}   .t-coral span{color:var(--coral-600)}
+
+/* ---------- verse of the week ---------- */
+
+.verse{
+  display:flex;gap:14px;background:var(--coral-50);border-radius:20px;
+  padding:17px 22px;margin-bottom:26px;
+}
+.verse svg{width:24px;height:24px;flex:none;margin-top:2px;
+  stroke:var(--coral-600);fill:none;stroke-width:1.8;stroke-linejoin:round}
+.v-label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--coral-600);margin-bottom:5px}
+.v-text{font-size:16.5px;line-height:1.45;color:var(--coral-900)}
+.v-ref{font-family:'Baloo 2',cursive;font-size:15px;font-weight:600;
+  color:var(--coral-600);margin-top:5px}
+
+/* ---------- heading ---------- */
+
+.bar{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+h2{font-family:'Baloo 2',cursive;font-size:30px;font-weight:700;line-height:1.2}
+
+/* ---------- calendar ---------- */
+
+.dow{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;margin-bottom:7px}
+.dow div{
+  text-align:center;font-size:12px;font-weight:500;letter-spacing:.04em;
+  text-transform:uppercase;color:var(--ink-soft);
+}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}
+.cell{
+  background:var(--card);border-radius:14px;min-height:118px;padding:8px 10px 10px;
+  position:relative;
+}
+.num{font-family:'Baloo 2',cursive;font-size:16px;font-weight:600;color:var(--ink-soft);display:block;margin-bottom:4px}
+.ev{font-size:13px;line-height:1.34;margin-bottom:5px}
+.cell.empty{background:transparent}
+.cell.weekend{background:#FBFAF7}
+.ev + .ev{border-top:1px solid rgba(0,0,0,.09);padding-top:5px}
+.month-note{
+  background:var(--sand);border-radius:14px;padding:11px 16px;
+  font-size:13.5px;color:#57544C;margin-bottom:10px;
+}
+.cell.has-event{background:var(--purple-50)}
+.cell.has-event .num{color:var(--purple-600)}
+.cell.has-event .ev{color:var(--purple-800)}
+.cell.closed{background:var(--red-50)}
+.cell.closed .num,.cell.closed .ev{color:var(--red-800)}
+.span-nums{display:grid;margin-bottom:4px}
+.span-nums .num{margin-bottom:0}
+.cell.span-note{background:var(--sand)}
+.cell.span-note .num{color:var(--ink-soft)}
+.cell.span-note .ev{font-size:12.5px;color:#57544C}
+.cell.today{background:var(--amber-50)}
+.cell.today .num,.cell.today .ev{color:var(--amber-800)}
+.today-fin{position:absolute;top:8px;right:9px;width:19px;height:19px;fill:var(--amber-600)}
+
+/* ---------- phone list ---------- */
+
+.list{display:none;flex-direction:column;gap:8px}
+.row{display:flex;gap:13px;background:var(--card);border-radius:16px;padding:13px 15px}
+.row.has-event{background:var(--purple-50)}
+.row.closed{background:var(--red-50);color:var(--red-800)}
+.row.today{background:var(--amber-50);color:var(--amber-800)}
+.row-d{flex:none;width:48px;text-align:center}
+.row-d.range{width:64px}
+.row-d.range b{font-size:20px}
+.row-d b{display:block;font-family:'Baloo 2',cursive;font-size:26px;font-weight:700;line-height:1}
+.row-d span{font-size:11px;text-transform:uppercase;letter-spacing:.05em;opacity:.7}
+.row-t{font-size:15px;padding-top:3px}
+.row-t p{margin-bottom:3px}
+
+/* ---------- bottom cards ---------- */
+
+.cards{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:14px;margin-top:22px}
+.card{border-radius:20px;padding:18px 20px}
+.card h3{font-family:'Baloo 2',cursive;font-size:22px;font-weight:600;margin-bottom:11px}
+.card li{list-style:none;font-size:14px;line-height:1.44;margin-bottom:10px}
+.card li:last-child{margin-bottom:0}
+.card li b{font-weight:500}
+.c-clubs{background:var(--green-50)}  .c-clubs h3,.c-clubs li b{color:var(--green-800)}
+.c-up{background:var(--coral-50)}     .c-up h3,.c-up li b{color:var(--coral-900)}
+.c-bd{background:var(--pink-50)}      .c-bd h3,.c-bd li b{color:var(--pink-800)}
+.card li span{opacity:.75;font-size:13px}
+
+footer{text-align:center;font-size:13px;color:var(--ink-soft);margin-top:28px}
+
+@media (max-width:900px){
+  .cards{grid-template-columns:1fr}
+  .tiles{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:760px){
+  .dow,.grid{display:none}
+  .list{display:flex}
+  h2{font-size:26px}
+  .hello-card{padding:15px 16px;gap:11px}
+  .weather{padding-left:0;gap:7px}
+  .verse{padding:15px 17px;gap:11px}
+  .v-text{font-size:15.5px}
+  .weather svg{width:29px;height:29px}
+  .w-temp{font-size:23px}
+  .w-word{font-size:11.5px}
+}
+@media (max-width:480px){
+  .avatar{display:none}
+  .hello{font-size:22px}
+  .today-line{font-size:13px}
+}
+@media (max-width:400px){
+  .hello{font-size:20px}
+  .today-line{font-size:12.5px}
+}
+@media (max-width:340px){
+  .w-word{display:none}
+  .weather svg{width:26px;height:26px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none !important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hello-card">
+    <div class="avatar">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M13 45C21 39 31 27 41 11C41 24 43 36 48 45Z"/><path d="M4 49q7-4 14 0t14 0t14 0t14 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="M11 57q7-4 14 0t14 0t14 0" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>
+    </div>
+    <div class="who">
+      <div class="hello" id="hello">Hi Alex!</div>
+      <div class="today-line" id="todayLine"></div>
+    </div>
+    <div class="weather" id="weather">
+      <span id="wIcon"></span>
+      <div>
+        <div class="w-temp" id="wTemp"></div>
+        <div class="w-word" id="wWord"></div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="tiles">
+    <a class="tile t-school" href="https://app.praxischool.com/parent_login.php?s=2167">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 7 5 16l19 9 19-9z" fill="#185FA5"/><path d="M11 21v10c0 4 6 7.5 13 7.5S37 35 37 31V21l-13 6z" fill="#85B7EB"/><path d="M43 16v12" stroke="#0C447C" stroke-width="2.5" fill="none" stroke-linecap="round"/></svg>
+      <b>PraxiSchool</b><span>Homework and Grades</span>
+    </a>
+    <a class="tile t-read" href="https://login.renaissance.com/10955dbc-1203-42e5-8ce4-49d1a985a1cd/student?state=171f93d0-24fa-4d25-ab3a-1cd9e6631f7e">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M7 11h13c2.2 0 4 1.8 4 4v23c0-2.2-1.8-4-4-4H7z" fill="#D4537E"/><path d="M41 11H28c-2.2 0-4 1.8-4 4v23c0-2.2 1.8-4 4-4h13z" fill="#F4C0D1"/><path d="M24 15v23" stroke="#72243E" stroke-width="2" fill="none"/></svg>
+      <b>AR</b><span>Reading Quizzes</span>
+    </a>
+    <a class="tile t-math" href="https://www.ixl.com/signin/rca">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="7" y="7" width="15" height="15" rx="4.5" fill="#EF9F27"/><rect x="26" y="7" width="15" height="15" rx="4.5" fill="#FAC775"/><rect x="7" y="26" width="15" height="15" rx="4.5" fill="#FAC775"/><rect x="26" y="26" width="15" height="15" rx="4.5" fill="#EF9F27"/></svg>
+      <b>IXL</b><span>Math Practice</span>
+    </a>
+    <a class="tile t-cal" href="https://content.praxischool.com/content/2167/tResources/2108.pdf">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="7" y="11" width="34" height="30" rx="6" fill="#CECBF6"/><rect x="7" y="11" width="34" height="9" rx="4.5" fill="#7F77DD"/><rect x="13" y="26" width="7" height="7" rx="2.5" fill="#7F77DD"/><rect x="28" y="26" width="7" height="7" rx="2.5" fill="#fff"/></svg>
+      <b>Calendar</b><span id="calSub">&nbsp;</span>
+    </a>
+  </nav>
+
+  <div class="verse" id="verse"></div>
+
+  <div class="bar">
+    <h2 id="monthName">Calendar</h2>
+  </div>
+
+  <div id="notes"></div>
+  <div class="dow" id="dow"></div>
+  <div class="grid" id="grid"></div>
+  <div class="list" id="list"></div>
+
+  <div class="cards">
+    <section class="card c-clubs"><h3>Alex's Clubs</h3><ul id="clubs"></ul></section>
+    <section class="card c-up"><h3>Coming up</h3><ul id="upcoming"></ul></section>
+    <section class="card c-bd"><h3>Birthdays</h3><ul id="birthdays"></ul></section>
+  </div>
+
+  <footer>Rainbow Christian Academy &nbsp;·&nbsp; Weather by Open-Meteo</footer>
+</div>
+
+<script>
+/* ==========================================================================
+   ALEX'S CALENDAR — this is the only file you edit each month.
+   Everything below is copied straight from the school PDF.
+   Save the file, commit it, and the site updates itself.
+   ========================================================================== */
+
+/* ==========================================================================
+   VERSE OF THE WEEK — the 52 verses from the "52 Bible Verses for Children
+   to Memorize" list. One shows each week and it changes every Monday morning.
+   Add or swap any of them freely; the rotation uses however many are here.
+   ========================================================================== */
+
+window.VERSES = [
+  { t: "With God, all things are possible.", r: "Mark 10:27" },
+  { t: "For we walk by faith, not by sight.", r: "2 Corinthians 5:7" },
+  { t: "For God has not given us a spirit of fear, but of power and of love and of a sound mind.", r: "2 Timothy 1:7" },
+  { t: "It is more blessed to give than to receive.", r: "Acts 20:35" },
+  { t: "Forgive one another as Christ forgave you.", r: "Colossians 3:13" },
+  { t: "Children, obey your parents in the Lord: for this is right.", r: "Ephesians 6:1" },
+  { t: "Be strong in the Lord and in His mighty power.", r: "Ephesians 6:10" },
+  { t: "In the beginning God created the heavens and the earth.", r: "Genesis 1:1" },
+  { t: "Faith without works is dead.", r: "James 2:20" },
+  { t: "For with God, nothing will be impossible.", r: "Luke 1:37" },
+  { t: "Love your neighbor as yourself.", r: "Mark 12:31" },
+  { t: "Honor your father and your mother.", r: "Matthew 15:4" },
+  { t: "If you believe, you will receive whatever you ask for in prayer.", r: "Matthew 21:22" },
+  { t: "I am with you always, even to the end of the world.", r: "Matthew 28:20" },
+  { t: "I can do all things through Christ who gives me strength.", r: "Philippians 4:13" },
+  { t: "Your word is truth.", r: "John 17:17" },
+  { t: "We love because God first loved us.", r: "1 John 4:19" },
+  { t: "Pray without ceasing.", r: "1 Thessalonians 5:17" },
+  { t: "He is not here, for He has risen.", r: "Matthew 28:6" },
+  { t: "Be kind and compassionate to one another.", r: "Ephesians 4:32" },
+  { t: "When I am afraid, I put my trust in you.", r: "Psalm 56:3" },
+  { t: "Give all your worries and cares to God, for he cares about you.", r: "1 Peter 5:7" },
+  { t: "Love one another.", r: "John 13:34" },
+  { t: "Then Jesus said to the disciples, “Have faith in God.”", r: "Mark 11:22" },
+  { t: "Your word is a lamp to my feet and a light to my path.", r: "Psalm 119:105" },
+  { t: "Trust in the Lord with all your heart.", r: "Proverbs 3:5" },
+  { t: "Be strong and courageous.", r: "Joshua 1:9" },
+  { t: "For freedom Christ has set us free.", r: "Galatians 5:1" },
+  { t: "God so loved the world that He gave His one and only Son that anyone who believes in Him will not die but will have eternal life.", r: "John 3:16" },
+  { t: "Let everything that has breath praise the Lord.", r: "Psalm 150:6" },
+  { t: "The Lord bless you and keep you.", r: "Numbers 6:24" },
+  { t: "This is the day the Lord has made; We will rejoice and be glad in it.", r: "Psalm 118:24" },
+  { t: "I am the good shepherd.", r: "John 10:11" },
+  { t: "Do to others as you would have them do to you.", r: "Luke 6:31" },
+  { t: "You are the salt of the earth.", r: "Matthew 5:13" },
+  { t: "You are the light of the world.", r: "Matthew 5:14" },
+  { t: "My salvation comes from Him.", r: "Psalm 62:1" },
+  { t: "For all have sinned and fall short of the glory of God.", r: "Romans 3:23" },
+  { t: "Set your minds on things above, not on earthly things.", r: "Colossians 3:2" },
+  { t: "Jesus Christ is the same yesterday, today & forever.", r: "Hebrews 13:8" },
+  { t: "Rejoice in the Lord always.", r: "Philippians 4:4" },
+  { t: "Every good gift and every perfect gift is from above.", r: "James 1:17" },
+  { t: "The earth and everything in it belong to the Lord. The world and all its people belong to Him.", r: "Psalm 24:1" },
+  { t: "The Lord is my shepherd; I have all that I need.", r: "Psalm 23:1" },
+  { t: "Believe in the Lord Jesus, and you will be saved.", r: "Acts 16:31" },
+  { t: "Children, obey your parents in everything, for this pleases the Lord.", r: "Colossians 3:20" },
+  { t: "I have hidden Your word in my heart that I might not sin against You.", r: "Psalm 119:11" },
+  { t: "Look to the LORD and His strength; seek His face always.", r: "1 Chronicles 16:11" },
+  { t: "Rejoice always.", r: "1 Thessalonians 5:16" },
+  { t: "God is love.", r: "1 John 4:16" },
+  { t: "Give thanks to the Lord, for He is good!", r: "Psalm 136:1" },
+  { t: "By His stripes, we are healed.", r: "Isaiah 53:5" }
+];
+
+window.CALENDAR = {
+
+  /* --- Which month is showing --------------------------------------------
+     year and month (1 = January, 10 = October).                          */
+
+  year: 2026,
+  month: 10,
+
+  /* --- The extra squares ---------------------------------------------------
+     These sit after the four fixed buttons and get a fresh PDF each month.
+     Paste the new address between the quote marks. Colors: green, teal,
+     coral. Icons: book, lunch. Delete a block to remove that square.      */
+
+  links: [
+    { label: "Reading", sub: "This Month's Assignment", color: "green", icon: "book",
+      url: "https://content.praxischool.com/content/2167/tClassResources/lp377.pdf" },
+    { label: "Lunch",   sub: "Hot Lunch Menu",          color: "teal",  icon: "lunch",
+      url: "https://content.praxischool.com/content/2167/tResources/2103.pdf" }
+  ],
+
+  /* --- What happens on each day ------------------------------------------
+     The number on the left is the date. Put the text in quotes.
+     A day can hold more than one thing: "5": ["First thing", "Second thing"]
+     Days that aren't listed here just show up empty.                      */
+
+  days: {
+    "5":  ["World Teacher Day! Bring your teacher a treat"],
+    "6":  ["$4 Street Clothes \u2014 proceeds go to the WOW Program"],
+    "7":  ["2nd grade chapel special"],
+    "8":  ["School wide spelling BEE"],
+    "9":  ["Soccer Shots begins 3:30-5:00"],
+    "12": ["Columbus Day: school is open"],
+    "13": ["Berry Farm K5 field trip"],
+    "14": ["1st grade chapel special"],
+    "15": ["8th grade off campus lunch"],
+    "16": ["Last day of the grading period"],
+    "21": ["K5 chapel special"],
+    "22": ["Harvest Snack Party 1st-8th. Come dressed like a farmer"],
+    "23": ["Regional Spelling Bee", "Rainbow Under the Stars"],
+    "26": ["Soccer tryouts 3:30-5:00"],
+    "27": ["Soccer tryouts 3:30-5:00"],
+    "28": ["Mandatory early dismissal @ 12:00"]
+  },
+
+  /* --- Notes that stretch across several days ----------------------------
+     "from" is the first date and "to" is the last. A note with "lead"
+     instead sits on the blank squares before the 1st. Add closed: true
+     to turn it red.                                                       */
+
+  spans: [
+    {
+      from: 19, to: 20,
+      text: "Harvey the Pumpkin festivities this week!"
+    },
+    {
+      from: 29, to: 31, closed: true,
+      text: "School closed for FACCS teacher conference"
+    }
+  ],
+
+  /* --- Notes for the whole month -----------------------------------------
+     These sit in a grey bar just above the calendar, for anything that
+     isn't tied to one square.                                             */
+
+  notes: [],
+
+  /* --- The tail of last month --------------------------------------------
+     The blank squares before the 1st get filled with the end of the
+     previous month, so the current school week stays whole. Just the
+     dates and what was on them.                                           */
+
+  prevDays: {
+    "30": ["3rd grade chapel special"]
+  },
+
+  prevSpans: [
+    { from: 28, to: 29, text: "School pictures this week" }
+  ],
+
+  /* --- Days with no school -----------------------------------------------
+     These turn the squares red on the calendar.                          */
+
+  noSchool: ["2026-10-29", "2026-10-30", "2026-11-11",
+             "2026-11-23", "2026-11-24", "2026-11-25", "2026-11-26", "2026-11-27"],
+
+  /* --- Alex's clubs box --------------------------------------------------- */
+
+  clubs: [
+    { name: "Created to Create Club", when: "Every other Monday",
+      everyOtherFrom: "2026-09-14" },
+    { name: "Tennis",                 when: "Every Monday and Saturday",
+      weekdays: [1, 6] }
+  ],
+
+  /* --- Upcoming events box ------------------------------------------------ */
+
+  upcoming: [
+    { date: "Nov 3",       text: "Report cards & MAP scores" },
+    { date: "Nov 11",      text: "School closed for Veterans Day" },
+    { date: "Nov 12-13",   text: "Family Thanksgiving stew luncheon" },
+    { date: "Nov 23-27",   text: "School closed for Thanksgiving break" }
+  ],
+
+  /* --- Birthdays box ------------------------------------------------------ */
+
+  birthdays: [
+    { who: "Miss Hailey",    detail: "Assistant", date: "Oct 5"  },
+    { who: "Mrs. Sipac",     detail: "K4",        date: "Oct 6"  },
+    { who: "Mrs. Orinstein", detail: "K2",        date: "Oct 18" },
+    { who: "Ms. Glass",      detail: "1st grade", date: "Oct 24" }
+  ]
+};
+</script>
+<script>
+(function(){
+  var C = window.CALENDAR;
+  if (!C) {
+    document.getElementById("grid").innerHTML =
+      '<p style="grid-column:span 7;padding:20px">The calendar data didn\'t load. '
+      + 'Check that the CALENDAR block near the top of this file is still intact.</p>';
+    return;
+  }
+  var DOW  = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+  var ABBR = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  var MON  = ["January","February","March","April","May","June","July",
+              "August","September","October","November","December"];
+  var FIN = '<path d="M13 45C21 39 31 27 41 11C41 24 43 36 48 45Z"/>';
+
+  function esc(s){
+    return String(s).replace(/[&<>"]/g,function(c){
+      return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];
+    });
+  }
+
+  var now   = new Date();
+  var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  var isThisMonth = (now.getFullYear() === C.year && now.getMonth() + 1 === C.month);
+  var todayDate   = isThisMonth ? now.getDate() : 0;
+
+  var first = new Date(C.year, C.month - 1, 1).getDay();
+  var total = new Date(C.year, C.month, 0).getDate();
+
+  var closed = {};
+  (C.noSchool || []).forEach(function(d){
+    var p = d.split("-").map(Number);
+    if (p[0] === C.year && p[1] === C.month) closed[p[2]] = true;
+  });
+
+  var spanStart = {}, spanCovered = {};
+  (C.spans || []).forEach(function(s){
+    spanStart[s.from] = s;
+    for (var d = s.from; d <= s.to; d++) spanCovered[d] = true;
+  });
+
+  /* which days do Alex's clubs land on this month? */
+  /* whole-month notes that don't belong to one square */
+  document.getElementById("notes").innerHTML = (C.notes || []).map(function(n){
+    return '<div class="month-note">' + esc(n) + '</div>';
+  }).join("");
+
+  /* the tail of last month, so the current school week stays whole */
+  var prevTotal = new Date(C.year, C.month - 1, 0).getDate();
+  var prevMonName = MON[(C.month + 10) % 12];
+
+  document.getElementById("monthName").textContent = MON[C.month - 1] + " " + C.year;
+  document.getElementById("calSub").textContent = MON[C.month - 1] + " " + C.year;
+
+  var h = now.getHours();
+  var part = h < 12 ? "Good morning" : (h < 17 ? "Good afternoon" : "Good evening");
+  document.getElementById("hello").textContent = part + ", Alex!";
+
+  /* Club dates: the next three, whenever they fall. Past dates drop off by
+     themselves as the days pass.                                          */
+  var CLUB_COUNT = 3;
+
+  function clubHits(c, dt){
+    if (c.weekdays) return c.weekdays.indexOf(dt.getDay()) > -1;
+    if (c.everyOtherFrom){
+      var p = c.everyOtherFrom.split("-").map(Number);
+      var diff = Math.round((Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate()) -
+                             Date.UTC(p[0], p[1] - 1, p[2])) / 86400000);
+      return diff >= 0 && diff % 14 === 0;
+    }
+    return false;
+  }
+
+  function clubDates(c){
+    var out = [], guard = 0;
+    var d = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    while (out.length < CLUB_COUNT && guard < 400){
+      if (clubHits(c, d)) out.push(new Date(d));
+      d.setDate(d.getDate() + 1);
+      guard++;
+    }
+    return out;
+  }
+
+  function listDates(ds){
+    return ds.map(function(dt){
+      return MON[dt.getMonth()].slice(0, 3) + " " + dt.getDate();
+    }).join(" \u00B7 ");
+  }
+
+  var clubCache = (C.clubs || []).map(function(c){
+    return { c: c, ds: clubDates(c) };
+  });
+
+  function ordinal(n){
+    if (n > 3 && n < 21) return n + "th";
+    return n + (["th","st","nd","rd"][n % 10] || "th");
+  }
+  var line = "Today is " + DOW[now.getDay()] + ", " + MON[now.getMonth()] +
+             " " + ordinal(now.getDate());
+
+  /* what's on today: her clubs first, then school events — pulled from the
+     same lists that feed the calendar and the clubs box, so nothing that
+     only lives in a multi-day note or in last month's squares gets missed */
+  var bits = [];
+
+  clubCache.forEach(function(e){
+    if (e.ds.length && e.ds[0].getFullYear() === now.getFullYear() &&
+        e.ds[0].getMonth() === now.getMonth() && e.ds[0].getDate() === now.getDate()) {
+      bits.push(e.c.name);
+    }
+  });
+
+  if (isThisMonth) {
+    (C.days[todayDate] || []).forEach(function(t){ bits.push(t); });
+    (C.spans || []).forEach(function(s){
+      if (todayDate >= s.from && todayDate <= s.to) bits.push(s.text);
+    });
+  } else {
+    /* the calendar is showing next month, so today sits in its lead-in row */
+    var pd = String(now.getDate());
+    if (now.getMonth() === (C.month + 10) % 12) {
+      ((C.prevDays || {})[pd] || []).forEach(function(t){ bits.push(t); });
+      (C.prevSpans || []).forEach(function(s){
+        if (now.getDate() >= s.from && now.getDate() <= s.to) bits.push(s.text);
+      });
+    }
+  }
+
+  if (isThisMonth && closed[todayDate]) bits = ["No school today!"];
+  if (bits.length) line += " \u2014 " + bits.join(" \u00B7 ");
+  document.getElementById("todayLine").textContent = line;
+
+  var TILE_ICONS = {
+    /* clipboard, not a book — the AR tile already owns the book shape */
+    book: '<rect x="10" y="9" width="28" height="33" rx="5" fill="#A8CC7A"/>' +
+          '<rect x="17" y="5" width="14" height="8" rx="3" fill="#3B6D11"/>' +
+          '<path d="M17 23h14M17 30h14M17 36h9" stroke="#27500A" stroke-width="2.6" ' +
+          'stroke-linecap="round" fill="none"/>',
+    /* plate with a fork and knife */
+    lunch:'<circle cx="24" cy="25" r="11" fill="#9FE1CB"/>' +
+          '<circle cx="24" cy="25" r="6.5" fill="#5DCAA5"/>' +
+          '<path d="M8 8v8M12 8v8M10 16v24" stroke="#04342C" stroke-width="2.4" ' +
+          'stroke-linecap="round" fill="none"/>' +
+          '<path d="M39 8c2.2 4 2.2 9 0 13M39 21v19" stroke="#04342C" stroke-width="2.4" ' +
+          'stroke-linecap="round" fill="none"/>',
+    doc:  '<rect x="10" y="6" width="28" height="36" rx="5" fill="#C7C3B8"/>' +
+          '<path d="M17 17h14M17 24h14M17 31h9" stroke="#4A4740" stroke-width="2.4" ' +
+          'stroke-linecap="round" fill="none"/>'
+  };
+
+  var tilesEl = document.querySelector(".tiles");
+  (C.links || []).forEach(function(l){
+    var a = document.createElement("a");
+    a.className = "tile t-" + (l.color || "green");
+    a.href = l.url;
+    a.innerHTML = '<svg viewBox="0 0 48 48" aria-hidden="true">' +
+                  (TILE_ICONS[l.icon] || TILE_ICONS.doc) + '</svg>' +
+                  '<b>' + esc(l.label) + '</b><span>' + esc(l.sub || "") + '</span>';
+    tilesEl.appendChild(a);
+  });
+
+  /* verse of the week: steps forward every Monday, wraps at the end */
+  (function(){
+    var V = window.VERSES || [];
+    var el = document.getElementById("verse");
+    if (!V.length){ el.style.display = "none"; return; }
+    var ANCHOR = Date.UTC(2026, 7, 31);            // Monday 31 Aug 2026 = verse 1
+    var todayUTC = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+    var weeks = Math.floor((todayUTC - ANCHOR) / 604800000);
+    var v = V[((weeks % V.length) + V.length) % V.length];
+    el.innerHTML =
+      '<svg viewBox="0 0 24 24" aria-hidden="true">' +
+      '<path d="M12 6.5C10.6 5.2 8.6 4.5 6 4.5H3v13h3c2.6 0 4.6.7 6 2 1.4-1.3 3.4-2 6-2h3v-13h-3c-2.6 0-4.6.7-6 2z"/>' +
+      '<path d="M12 6.5v14"/></svg>' +
+      '<div><div class="v-label">Verse of the week</div>' +
+      '<div class="v-text">' + esc(v.t) + '</div>' +
+      '<div class="v-ref">' + esc(v.r) + '</div></div>';
+  })();
+
+  document.getElementById("dow").innerHTML =
+    DOW.map(function(d){ return "<div>" + d + "</div>"; }).join("");
+
+  var grid = "", col = 0, skip = 0;
+  var prevSpanStart = {}, prevCovered = {};
+  (C.prevSpans || []).forEach(function(s){
+    prevSpanStart[s.from] = s;
+    for (var d = s.from; d <= s.to; d++) prevCovered[d] = true;
+  });
+  var pi2 = 0;
+  while (pi2 < first){
+    var pd = prevTotal - first + 1 + pi2;
+    var ps = prevSpanStart[pd];
+    if (ps){
+      var proom = Math.min(ps.to - ps.from + 1, first - pi2);
+      var pnums = "";
+      for (var q = 0; q < proom; q++) pnums += '<span class="num">' + (pd + q) + '</span>';
+      grid += '<div class="cell prev span-note" style="grid-column:span ' + proom + '">' +
+              '<div class="span-nums" style="grid-template-columns:repeat(' + proom + ',1fr)">' +
+              pnums + '</div><div class="ev">' + esc(ps.text) + '</div></div>';
+      pi2 += proom; col += proom; continue;
+    }
+    if (prevCovered[pd]){ pi2++; col++; continue; }
+    var pev = (C.prevDays || {})[pd] || [];
+    grid += '<div class="cell prev' + (pev.length ? " has-event" : "") + '">' +
+            '<span class="num">' + pd + '</span>' +
+            pev.map(function(t){ return '<div class="ev">' + esc(t) + '</div>'; }).join("") +
+            '</div>';
+    pi2++; col++;
+  }
+
+  for (var d = 1; d <= total; d++){
+    if (skip > 0){ skip--; continue; }
+
+    var s = spanStart[d];
+    if (s){
+      var room = Math.min(s.to, d + (6 - col)) - d + 1;
+      skip = room - 1;
+      var extra = "";
+      for (var k = s.from; k <= s.to; k++){
+        (C.days[k] || []).forEach(function(t){
+          extra += '<div class="ev">' + k + ' \u00B7 ' + esc(t) + '</div>';
+        });
+      }
+      var nums = "";
+      for (var j = 0; j < room; j++) nums += '<span class="num">' + (d + j) + '</span>';
+      grid += '<div class="cell span-note' + (s.closed ? ' closed' : '') +
+              '" style="grid-column:span ' + room + '">' +
+              '<div class="span-nums" style="grid-template-columns:repeat(' + room + ',1fr)">' +
+              nums + '</div>' + extra +
+              '<div class="ev">' + esc(s.text) + '</div></div>';
+      col = (col + room) % 7;
+      continue;
+    }
+
+    var events = C.days[d] || [];
+    var cls = "cell";
+    if (col === 0 || col === 6) cls += " weekend";
+    if (events.length) cls += " has-event";
+    if (closed[d]) cls += " closed";
+    if (d === todayDate) cls += " today";
+
+    var inner = '<span class="num">' + d + '</span>';
+    if (d === todayDate) inner +=
+      '<svg class="today-fin" viewBox="0 0 64 64" aria-label="Today">' + FIN + '</svg>';
+    events.forEach(function(t){ inner += '<div class="ev">' + esc(t) + '</div>'; });
+
+    grid += '<div class="' + cls + '">' + inner + '</div>';
+    col = (col + 1) % 7;
+  }
+  while (col !== 0){ grid += '<div class="cell empty"></div>'; col = (col + 1) % 7; }
+  document.getElementById("grid").innerHTML = grid;
+
+  function dowOf(d){ return ABBR[new Date(C.year, C.month - 1, d).getDay()]; }
+
+  var rows = "";
+  (C.notes || []).forEach(function(n){
+    rows += '<div class="row has-event"><div class="row-t"><p>' + esc(n) + "</p></div></div>";
+  });
+  for (var pi = 0; pi < first; pi++){
+    var pd2 = prevTotal - first + 1 + pi;
+    var ps2 = prevSpanStart[pd2];
+    if (ps2){
+      rows += '<div class="row"><div class="row-d range"><b>' + ps2.from + "\u2013" + ps2.to +
+              '</b></div><div class="row-t"><p>' + esc(ps2.text) + '</p></div></div>';
+      continue;
+    }
+    if (prevCovered[pd2]) continue;
+    var pev2 = (C.prevDays || {})[pd2] || [];
+    if (!pev2.length) continue;
+    rows += '<div class="row"><div class="row-d"><b>' + pd2 + '</b><span>' +
+            prevMonName.slice(0,3) + '</span></div><div class="row-t">' +
+            pev2.map(function(t){ return "<p>" + esc(t) + "</p>"; }).join("") + '</div></div>';
+  }
+  for (var d2 = 1; d2 <= total; d2++){
+    var sp = null;
+    if (spanCovered[d2]) {
+      sp = (C.spans || []).filter(function(x){
+        return !x.lead && d2 >= x.from && d2 <= x.to; })[0];
+    }
+    if (sp && d2 !== sp.from) continue;      // already shown in the merged row
+
+    var items = (C.days[d2] || []).slice();
+    var label = String(d2), sublabel = dowOf(d2), wide = "";
+    var isClosed = !!closed[d2], isToday = (d2 === todayDate);
+
+    if (sp) {
+      for (var k = sp.from; k <= sp.to; k++){
+        if (k !== d2) (C.days[k] || []).forEach(function(t){ items.push(k + " \u00B7 " + t); });
+        if (closed[k]) isClosed = true;
+        if (k === todayDate) isToday = true;
+      }
+      items.push(sp.text);
+      if (sp.closed) isClosed = true;
+      label = sp.from + "\u2013" + sp.to;
+      sublabel = "";
+      wide = " range";
+    }
+
+    if (!items.length && !isClosed) continue;
+
+    var rc = "row has-event";
+    if (isClosed) rc = "row closed";
+    if (isToday)  rc = "row today";
+
+    rows += '<div class="' + rc + '"><div class="row-d' + wide + '"><b>' + label + '</b>' +
+            (sublabel ? '<span>' + sublabel + '</span>' : '') + '</div>' +
+            '<div class="row-t">' + items.map(function(t){ return "<p>" + esc(t) + "</p>"; }).join("") +
+            '</div></div>';
+  }
+  document.getElementById("list").innerHTML = rows;
+
+  /* --- weather, from open-meteo. No key needed.
+         Set to Homestead, Florida. ------------------------------------- */
+  var LAT = 25.4687, LON = -80.4776;
+
+  var ICON = {
+    sun:   '<circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2M12 19.4v2M2.6 12h2M19.4 12h2M5.4 5.4l1.4 1.4M17.2 17.2l1.4 1.4M18.6 5.4l-1.4 1.4M6.8 17.2l-1.4 1.4"/>',
+    part:  '<circle cx="8.6" cy="8.6" r="3.1"/><path d="M8.6 1.9v1.6M1.9 8.6h1.6M4 4l1.1 1.1M13.2 4l-1.1 1.1"/><path d="M8 20h9.4a3.4 3.4 0 0 0 .3-6.8 4.7 4.7 0 0 0-9-1.1A3.4 3.4 0 0 0 8 20z"/>',
+    cloud: '<path d="M7 19h10.2a3.7 3.7 0 0 0 .3-7.4 5.1 5.1 0 0 0-9.8-1.2A3.7 3.7 0 0 0 7 19z"/>',
+    fog:   '<path d="M7.5 15h9.7a3.5 3.5 0 0 0 .3-7 4.9 4.9 0 0 0-9.4-1.1A3.5 3.5 0 0 0 7.5 15z"/><path d="M5 18.5h14M7.5 21.5h9"/>',
+    rain:  '<path d="M7 16h10.2a3.7 3.7 0 0 0 .3-7.4 5.1 5.1 0 0 0-9.8-1.2A3.7 3.7 0 0 0 7 16z"/><path d="M9 19l-1 2.4M14 19l-1 2.4M18.5 19l-1 2.4"/>',
+    snow:  '<path d="M7 16h10.2a3.7 3.7 0 0 0 .3-7.4 5.1 5.1 0 0 0-9.8-1.2A3.7 3.7 0 0 0 7 16z"/><path d="M9 20h.01M13 19.4h.01M17 20h.01M11 22h.01M15 22h.01"/>',
+    storm: '<path d="M7 15.5h10.2a3.7 3.7 0 0 0 .3-7.4 5.1 5.1 0 0 0-9.8-1.2A3.7 3.7 0 0 0 7 15.5z"/><path d="M13.6 17.5l-3.4 3.1h3l-1 2.9"/>',
+    moon:  '<path d="M20.5 14.2A8.6 8.6 0 1 1 9.8 3.5a6.8 6.8 0 0 0 10.7 10.7z"/>'
+  };
+
+  function look(code, day){
+    if (code === 0) return day ? [ICON.sun, "Sunny"] : [ICON.moon, "Clear"];
+    if (code === 1) return day ? [ICON.sun, "Mostly sunny"] : [ICON.moon, "Mostly clear"];
+    if (code === 2) return [ICON.part,  "Partly cloudy"];
+    if (code === 3) return [ICON.cloud, "Cloudy"];
+    if (code === 45 || code === 48) return [ICON.fog, "Foggy"];
+    if (code >= 51 && code <= 57)   return [ICON.rain, "Drizzly"];
+    if (code >= 61 && code <= 67)   return [ICON.rain, "Rainy"];
+    if (code >= 71 && code <= 77)   return [ICON.snow, "Snowy"];
+    if (code >= 80 && code <= 82)   return [ICON.rain, "Rain showers"];
+    if (code >= 85 && code <= 86)   return [ICON.snow, "Snow showers"];
+    if (code >= 95)                 return [ICON.storm, "Thunderstorms"];
+    return [ICON.cloud, "Cloudy"];
+  }
+
+  fetch("https://api.open-meteo.com/v1/forecast?latitude=" + LAT + "&longitude=" + LON +
+        "&current=temperature_2m,weather_code,is_day&temperature_unit=fahrenheit")
+    .then(function(r){ if (!r.ok) throw 0; return r.json(); })
+    .then(function(w){
+      var c = w.current;
+      var pair = look(c.weather_code, c.is_day === 1);
+      document.getElementById("wIcon").innerHTML =
+        '<svg viewBox="0 0 24 24" aria-hidden="true">' + pair[0] + '</svg>';
+      document.getElementById("wTemp").textContent = Math.round(c.temperature_2m) + "\u00B0";
+      document.getElementById("wWord").textContent = pair[1];
+      document.getElementById("weather").className = "weather on";
+    })
+    .catch(function(){ /* no weather today; the card just stays hidden */ });
+
+  if ("serviceWorker" in navigator && location.protocol !== "file:") {
+    window.addEventListener("load", function(){
+      navigator.serviceWorker.register("sw.js").catch(function(){});
+    });
+  }
+
+  document.getElementById("clubs").innerHTML = clubCache.map(function(e){
+    var extra = listDates(e.ds) || e.c.note || "Nothing coming up";
+    return "<li><b>" + esc(e.c.name) + "</b><br>" + esc(e.c.when) +
+           (extra ? "<br><span>" + esc(extra) + "</span>" : "") + "</li>";
+  }).join("");
+
+  document.getElementById("upcoming").innerHTML = (C.upcoming || []).map(function(u){
+    return "<li><b>" + esc(u.date) + "</b><br>" + esc(u.text) + "</li>";
+  }).join("");
+
+  document.getElementById("birthdays").innerHTML = (C.birthdays || []).map(function(b){
+    return "<li><b>" + esc(b.who) + "</b> <span>" + esc(b.detail) + "</span><br>" +
+           esc(b.date) + "</li>";
+  }).join("");
+})();
+</script>
+</body>
+</html>

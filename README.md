@@ -115,18 +115,36 @@ plain page). Add or delete blocks freely; the grid reflows on its own, though it
 looks best with a multiple of three on a computer and an even number on a phone.
 
 `clubs`, `upcoming`, and `birthdays` are the three boxes at the bottom of the
-page. `clubs` holds only the ones Alex is actually in — each has a `name`, a
-`when`, and an optional `note` for the specific dates:
+page. `clubs` holds only the ones Alex is actually in, and their dates are
+worked out rather than typed:
 
 ```js
 clubs: [
-  { name: "Created to Create Club", when: "Every other Monday", note: "Oct 12 & 26" }
+  { name: "Created to Create Club", when: "Every other Monday",
+    everyOtherFrom: "2026-09-14" },
+  { name: "Tennis", when: "Every Monday and Saturday",
+    weekdays: [1, 6] }
 ]
 ```
 
-Because Created to Create is every *other* Monday, the `note` needs refreshing
-each month. It runs on the 14th and 28th of September, so October falls on the
-12th and 26th.
+Use `everyOtherFrom` with the date the club first met for anything fortnightly —
+it counts in 14-day steps from there, so **leave that date alone even after it
+passes**, it's what sets the rhythm. Use `weekdays` for anything weekly, where 0
+is Sunday through to 6 is Saturday, so `[1, 6]` means Mondays and Saturdays.
+
+The box shows the next three dates for each club and they drop off on their own
+as the days pass, so neither needs touching month to month. To show more or
+fewer, change `var CLUB_COUNT = 3;` in `index.html`.
+
+`prevDays` and `prevSpans` are optional. Fill them to show the end of last month
+in the blank squares before the 1st, which is worth doing when a new month
+starts mid-week and you'd otherwise lose a few school days. Leave them empty —
+`prevDays: {}` and `prevSpans: []` — and those squares stay blank.
+
+```js
+prevDays:  { "30": ["3rd grade chapel special"] },
+prevSpans: [ { from: 28, to: 29, text: "School pictures this week" } ]
+```
 
 ---
 

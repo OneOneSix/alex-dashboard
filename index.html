@@ -361,7 +361,7 @@ window.CALENDAR = {
 
   links: [
     { label: "Reading", sub: "This Month's Assignment", color: "green", icon: "book",
-      url: "https://content.praxischool.com/content/2167/tClassResources/lp377.pdf" },
+      url: "https://content.praxischool.com/content/2167/tClassResources/lp612.pdf" },
     { label: "Lunch",   sub: "Hot Lunch Menu",          color: "teal",  icon: "lunch",
       url: "https://content.praxischool.com/content/2167/tResources/2103.pdf" }
   ],
@@ -413,17 +413,12 @@ window.CALENDAR = {
   notes: [],
 
   /* --- The tail of last month --------------------------------------------
-     The blank squares before the 1st get filled with the end of the
-     previous month, so the current school week stays whole. Just the
-     dates and what was on them.                                           */
+     Optional. Fill these to show the end of the previous month in the
+     blank squares before the 1st, so the current school week stays whole.
+     Leave them empty and those squares are simply blank.                  */
 
-  prevDays: {
-    "30": ["3rd grade chapel special"]
-  },
-
-  prevSpans: [
-    { from: 28, to: 29, text: "School pictures this week" }
-  ],
+  prevDays: {},
+  prevSpans: [],
 
   /* --- Days with no school -----------------------------------------------
      These turn the squares red on the calendar.                          */
@@ -648,7 +643,11 @@ window.CALENDAR = {
     prevSpanStart[s.from] = s;
     for (var d = s.from; d <= s.to; d++) prevCovered[d] = true;
   });
-  var pi2 = 0;
+  var hasPrev = Object.keys(C.prevDays || {}).length > 0 || (C.prevSpans || []).length > 0;
+  if (!hasPrev){
+    for (var z = 0; z < first; z++){ grid += '<div class="cell empty"></div>'; col++; }
+  }
+  var pi2 = hasPrev ? 0 : first;
   while (pi2 < first){
     var pd = prevTotal - first + 1 + pi2;
     var ps = prevSpanStart[pd];

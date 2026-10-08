@@ -105,7 +105,7 @@ get a fresh PDF each month, so paste the new address between the quote marks:
 ```js
 links: [
   { label: "Reading", sub: "This Month's Assignment", color: "green", icon: "book",
-    url: "https://content.praxischool.com/.../lp377.pdf" }
+    url: "https://content.praxischool.com/.../lp612.pdf" }
 ]
 ```
 
@@ -155,6 +155,19 @@ It names the day, then anything on today: her clubs first, then school events.
 It reads from every list — `days`, `spans`, `prevDays`, `prevSpans` and `clubs` —
 so a multi-day note or a day in last month's row still shows up. On a day with
 no school it just says so.
+
+## Spelling words
+
+The amber band between the squares and the verse. Swap the list each week:
+
+```js
+spelling: ["be", "he", "me", "by", "my", "cry",
+           "try", "go", "no", "so", "one", "two"],
+```
+
+It's in the `CALENDAR` block with everything else. Any number of words works —
+they wrap on their own. Empty the list to `spelling: []` and the whole band
+disappears, which is what you want over a break.
 
 ## Verse of the week
 

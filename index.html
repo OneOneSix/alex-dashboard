@@ -113,6 +113,7 @@ a{color:inherit}
   font-size:11px;letter-spacing:.08em;text-transform:uppercase;
   color:var(--amber-600);margin-bottom:11px;
 }
+.s-week{opacity:.72}
 .s-words{display:flex;flex-wrap:wrap;gap:9px}
 .word{
   background:var(--card);border-radius:12px;
@@ -428,9 +429,11 @@ window.CALENDAR = {
     }
   ],
 
-  /* --- This week's spelling words -----------------------------------------
-     Swap these out each week. Empty the list — spelling: [] — and the
+  /* --- Weekly spelling words -----------------------------------------
+     Swap the week and the words each Monday. Empty the list — spelling: [] — and the
      whole band disappears.                                                */
+
+  spellingWeek: "October 5–11",
 
   spelling: ["be", "he", "me", "by", "my", "cry",
              "try", "go", "no", "so", "one", "two"],
@@ -648,7 +651,9 @@ window.CALENDAR = {
   var spellEl = document.getElementById("spell");
   if ((C.spelling || []).length) {
     spellEl.innerHTML =
-      '<div class="s-label">This week\u2019s spelling words</div>' +
+      '<div class="s-label">Weekly spelling words' +
+      (C.spellingWeek ? ' <span class="s-week">\u00B7 ' + esc(C.spellingWeek) + '</span>' : '') +
+      '</div>' +
       '<div class="s-words">' +
       C.spelling.map(function(w){ return '<span class="word">' + esc(w) + '</span>'; }).join("") +
       '</div>';

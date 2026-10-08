@@ -103,6 +103,23 @@ a{color:inherit}
 .t-teal{background:var(--teal-50)}     .t-teal b{color:var(--teal-900)}     .t-teal span{color:var(--teal-700)}
 .t-coral{background:var(--coral-50)}   .t-coral b{color:var(--coral-900)}   .t-coral span{color:var(--coral-600)}
 
+/* ---------- spelling words ---------- */
+
+.spell{
+  background:var(--amber-50);border-radius:20px;
+  padding:16px 22px 18px;margin-bottom:14px;
+}
+.s-label{
+  font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--amber-600);margin-bottom:11px;
+}
+.s-words{display:flex;flex-wrap:wrap;gap:9px}
+.word{
+  background:var(--card);border-radius:12px;
+  padding:7px 16px;font-size:19px;font-weight:500;color:var(--amber-800);
+  font-family:'Lexend',system-ui,sans-serif;
+}
+
 /* ---------- verse of the week ---------- */
 
 .verse{
@@ -197,6 +214,9 @@ footer{text-align:center;font-size:13px;color:var(--ink-soft);margin-top:28px}
   h2{font-size:26px}
   .hello-card{padding:15px 16px;gap:11px}
   .weather{padding-left:0;gap:7px}
+  .spell{padding:14px 16px 16px}
+  .s-words{gap:7px}
+  .word{font-size:17px;padding:6px 13px}
   .verse{padding:15px 17px;gap:11px}
   .v-text{font-size:15.5px}
   .weather svg{width:29px;height:29px}
@@ -257,6 +277,8 @@ footer{text-align:center;font-size:13px;color:var(--ink-soft);margin-top:28px}
       <b>Calendar</b><span id="calSub">&nbsp;</span>
     </a>
   </nav>
+
+  <div class="spell" id="spell"></div>
 
   <div class="verse" id="verse"></div>
 
@@ -405,6 +427,13 @@ window.CALENDAR = {
       text: "School closed for FACCS teacher conference"
     }
   ],
+
+  /* --- This week's spelling words -----------------------------------------
+     Swap these out each week. Empty the list — spelling: [] — and the
+     whole band disappears.                                                */
+
+  spelling: ["be", "he", "me", "by", "my", "cry",
+             "try", "go", "no", "so", "one", "two"],
 
   /* --- Notes for the whole month -----------------------------------------
      These sit in a grey bar just above the calendar, for anything that
@@ -615,6 +644,17 @@ window.CALENDAR = {
                   '<b>' + esc(l.label) + '</b><span>' + esc(l.sub || "") + '</span>';
     tilesEl.appendChild(a);
   });
+
+  var spellEl = document.getElementById("spell");
+  if ((C.spelling || []).length) {
+    spellEl.innerHTML =
+      '<div class="s-label">This week\u2019s spelling words</div>' +
+      '<div class="s-words">' +
+      C.spelling.map(function(w){ return '<span class="word">' + esc(w) + '</span>'; }).join("") +
+      '</div>';
+  } else {
+    spellEl.style.display = "none";
+  }
 
   /* verse of the week: steps forward every Monday, wraps at the end */
   (function(){
